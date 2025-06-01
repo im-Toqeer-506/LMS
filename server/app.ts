@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import {ErrorMiddleware} from "./middleware/error";
+import UserRouter from "./routes/user.route";
 export const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
@@ -18,6 +19,9 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
         message: "API is working!"
     })
 })
+//api routes
+app.use('/api/v1',UserRouter)
+
 // unknown routes
 app.all(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
     const err = new Error(`Route ${req.originalUrl} not found!`) as any;
