@@ -124,12 +124,12 @@ interface ILoginRequest {
   email: string;
   password: string;
 }
-export const loginUser = catchAsyncErrors(
+export const LoginUser = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, password } = req.body as ILoginRequest;//the as keyword is a TypeScript type assertion. 
+      const { email, password } = req.body as ILoginRequest; //the as keyword is a TypeScript type assertion.
       if (!email || !password) {
-        return next(new ErrorHandler("Please enter email and password", 400));        
+        return next(new ErrorHandler("Please enter email and password", 400));
       }
       const user = await userModel.findOne({ email }).select("+password");
       if (!user) {
@@ -139,7 +139,21 @@ export const loginUser = catchAsyncErrors(
       if (!isPasswordMatch) {
         return next(new ErrorHandler("Invalid email or password", 401));
       }
-      sendToken(user,200,res);
+      sendToken(user, 200, res);
+    } catch (error:any) {
+      next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+export const LogoutUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.cookie("access_token", "",{maxAge:1});
+      res.cookie("refresh_token","", {maxAge:1});
+      res.status(200).json({
+        success:true,
+        message:"User Logout Successfully!"
+      })
     } catch (error:any) {
       next(new ErrorHandler(error.message, 400));
     }
