@@ -21,7 +21,6 @@ app.get("/test", (req: Request, res: Response, next: NextFunction) => {
 })
 //api routes
 app.use('/api/v1',UserRouter)
-
 // unknown routes
 app.all(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
     const err = new Error(`Route ${req.originalUrl} not found!`) as any;

@@ -25,7 +25,7 @@ export const ErrorMiddleware = (
   }
   //jwt token expired
   if (err.name === "TokenExpiredError") {
-    const message = `Your Url is Expired!Please try again Later `;
+    const message = `Your Url is Expired!\nPlease try again Later `;
     err = new ErrorHandler(message, 401);
   }
   res.status(err.statusCode).json({

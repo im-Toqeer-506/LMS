@@ -7,6 +7,7 @@ import ejs from "ejs";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import path from "path";
 import sendMail from "../utils/sendMail";
+import { sendToken } from "../utils/jwt";
 //register
 interface IRegistrationBody {
   name: string;
@@ -75,6 +76,7 @@ export const createActivationToken = (user: any) => {
 
   return { token, activationCode };
 };
+
 //activate User
 interface IActivationRequest {
   activation_token: string;
@@ -112,6 +114,32 @@ export const activateUser = catchAsyncErrors(
         success: true,
         message: "User activated successfully",
       });
+    } catch (error:any) {
+      next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+//login User
+interface ILoginRequest {
+  email: string;
+  password: string;
+}
+export const loginUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body as ILoginRequest;//the as keyword is a TypeScript type assertion. 
+      if (!email || !password) {
+        return next(new ErrorHandler("Please enter email and password", 400));        
+      }
+      const user = await userModel.findOne({ email }).select("+password");
+      if (!user) {
+        return next(new ErrorHandler("Invalid email or password", 401));
+      }
+      const isPasswordMatch = await user.comparePassword(password);
+      if (!isPasswordMatch) {
+        return next(new ErrorHandler("Invalid email or password", 401));
+      }
+      sendToken(user,200,res);
     } catch (error:any) {
       next(new ErrorHandler(error.message, 400));
     }
