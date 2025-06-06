@@ -203,13 +203,40 @@ export const updateAccessToken = catchAsyncErrors(
   }
 );
 //get user Info
-export const getUserInfo=catchAsyncErrors(async(req:Request,res:Response,next:NextFunction)=>{
-try {
-  const userId = req.user?._id || "";
-  getUserById(userId, res);
-  
-} catch (error:any) {
+export const getUserInfo = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?._id || "";
+      getUserById(userId, res);
+    } catch (error:any) {
       return next(new ErrorHandler(error.message, 400));
     }
+  }
+);
+//social Auths
+interface ISocialAuthBody{
+email:string;
+name:string;
+avatar:string
+}
+export const socialAuth = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
 
-})
+      const {email,name,avatar}=req.body as ISocialAuthBody;
+      const user=await userModel.findOne({email});
+      if(!user){
+        const newUser=await userModel.create({email,name,avatar});
+        sendToken(newUser,200,res);
+
+      }
+      else{
+        sendToken(user,200,res);
+      }
+
+
+    } catch (error:any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
