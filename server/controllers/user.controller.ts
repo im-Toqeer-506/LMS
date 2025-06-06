@@ -8,6 +8,7 @@ import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import path from "path";
 import sendMail from "../utils/sendMail";
 import { sendToken } from "../utils/jwt";
+import { redis } from "../utils/redis";
 //register
 interface IRegistrationBody {
   name: string;
@@ -114,7 +115,8 @@ export const activateUser = catchAsyncErrors(
         success: true,
         message: "User activated successfully",
       });
-    } catch (error:any) {
+    } catch (error:any
+    ) {
       next(new ErrorHandler(error.message, 400));
     }
   }
@@ -145,17 +147,20 @@ export const LoginUser = catchAsyncErrors(
     }
   }
 );
+// logout user
 export const LogoutUser = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      res.cookie("access_token", "",{maxAge:1});
-      res.cookie("refresh_token","", {maxAge:1});
+      res.cookie("access_token", "", { maxAge: 1 });
+      res.cookie("refresh_token", "", { maxAge: 1 });
+      const userId = req.user?._id || "";
+      redis.del(userId);
       res.status(200).json({
-        success:true,
-        message:"User Logout Successfully!"
-      })
+        success: true,
+        message: "User logged out successfully.",
+      });
     } catch (error:any) {
-      next(new ErrorHandler(error.message, 400));
+      return next(new ErrorHandler(error.message, 400));
     }
   }
 );

@@ -69,11 +69,11 @@ userSchema.pre<IUser>("save", async function (next) {
   next();
 });
 //sign access token
-userSchema.methods.SignAccessToken=function():String{
+userSchema.methods.SignAccessToken=function():string{
   return jwt.sign({id:this._id},process.env.ACCESS_TOKEN ||'')
 }
 //sign refresh token
-userSchema.methods.SignRefreshToken=function():String{
+userSchema.methods.SignRefreshToken=function():string{
   return jwt.sign({id:this._id},process.env.REFRESH_TOKEN ||'')
 }
 //compare password
