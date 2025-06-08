@@ -10,6 +10,7 @@ import sendMail from "../utils/sendMail";
 import { accessTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
 import { getUserById } from "../services/user.service";
+import cloudinary from "cloudinary";
 //register
 interface IRegistrationBody {
   name: string;
@@ -276,27 +277,78 @@ export const updateUserPassword = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { oldPassword, newPassword } = req.body as IUpdatePassword;
-      if(!oldPassword || !newPassword) {
+      if (!oldPassword || !newPassword) {
         return next(new ErrorHandler("Please enter old and new password", 400));
       }
-      const user=await userModel.findById(req.user?._id).select("+password");
-      if(user?.password=== undefined){
+      const user = await userModel.findById(req.user?._id).select("+password");
+      if (user?.password === undefined) {
         return next(new ErrorHandler("User not found", 404));
       }
       const isPasswordMatch = await user.comparePassword(oldPassword);
       if (!isPasswordMatch) {
         return next(new ErrorHandler("Old password is incorrect", 401));
       }
-      user.password=newPassword;
+      user.password = newPassword;
       await user.save();
-      const userId= req.user?._id || "";
-      if(!userId) {
+      const userId = req.user?._id || "";
+      if (!userId) {
         return next(new Error("User ID is undefined"));
       }
       await redis?.set(userId, JSON.stringify(user));
       res.status(200).json({
         success: true,
         message: "Password updated successfully",
+        user,
+      });
+    } catch (error:any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  }
+);
+//update user profile picture
+interface IUpdateProfilePicture {
+  avatar: string;
+}
+export const updateUserProfilePicture = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { avatar } = req.body;
+      const userId = req.user?._id;
+      const user = await userModel.findById(userId);
+      if (avatar && user) {
+        //if usere have one avatar then call this 
+        if (user?.avatar?.public_id) {
+          //first we are Deleting the old Image
+          await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+             await cloudinary.v2.uploader.destroy(user?.avatar?.public_id)
+                const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+                    folder: "avatars",
+                    width: 150,
+                });
+                user.avatar = {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url,
+                }
+        } else {
+      if(avatar){
+            const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "avatars",
+            width: 150,
+          });
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url,
+          };
+      }
+        }
+      }
+      await user?.save();
+      if (!userId) {
+        return next(new Error("User ID is undefined"));
+      }
+      await redis.set(userId, JSON.stringify(user));
+      res.status(200).json({
+        success: true,
         user,
       });
     } catch (error:any) {
