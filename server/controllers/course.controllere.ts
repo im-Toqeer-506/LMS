@@ -329,7 +329,10 @@ export const addReplyToReview=catchAsyncErrors(async (req: Request, res: Respons
       user:req.user,
       comment,
     }
-    course?.reviews.push(replyData);
+    if (!review.commentReplies) {
+    review.commentReplies = [];
+    }
+    review.commentReplies.push(replyData);
     course?.save();
     res.status(201).json({
       success:true,
