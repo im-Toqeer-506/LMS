@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Reply Notification</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #007bff;
+      }
+
+      p {
+        margin: 10px 0;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Hello <%= name || "User" %></h1>
+    <p>
+      A new reply has been added to your question in the video "<%= title ||
+      "Untitled" %>".
+    </p>
+    <p>
+      Please log in to our website to view the reply and continue the
+      discussion.
+    </p>
+    <p>Thank you for being part of our community!</p>
+  </body>
+</html>
