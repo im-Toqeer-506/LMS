@@ -306,3 +306,36 @@ try {
   return next(new ErrorHandler(error.message, 500));
 }
 });
+//add reply in review
+interface IAddReviewReplyData {
+    comment: string;
+    courseId: string;
+    reviewId: string;
+}
+export const addReplyToReview=catchAsyncErrors(async (req: Request, res: Response, next: NextFunction)=>{
+  try {
+    const { comment, courseId, reviewId } = req.body as IAddReviewReplyData;
+    const course = await CourseModel.findById(courseId);
+    if (!courseId) {
+      return next(new ErrorHandler("Course not found.", 404));
+    }
+    const review = course?.reviews.find(
+    (rev: any) => rev._id.toString() === reviewId
+    );
+    if (!review) {
+      return next(new ErrorHandler("Review not found", 400));
+    }
+    const replyData:any={
+      user:req.user,
+      comment,
+    }
+    course?.reviews.push(replyData);
+    course?.save();
+    res.status(201).json({
+      success:true,
+      course
+    })
+  } catch (error:any) {
+    return next(new ErrorHandler(error.message, 500));
+    }
+})
