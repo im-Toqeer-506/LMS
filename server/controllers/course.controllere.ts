@@ -257,3 +257,52 @@ export const addAnswer = catchAsyncErrors(
     }
   }
 );
+
+// add review in the course
+interface IAddReviewData {
+    courseId: string;
+    review: string;
+    rating: number;
+    userId: string;
+}
+export const addReview=catchAsyncErrors(async (req: Request, res: Response, next: NextFunction)=>{
+try {
+   const userCourseList = req.user?.courses;
+   const courseId=req.params.id;
+   //check if the course id exist in then UserCourseList based on the _id
+    const courseExists = userCourseList?.find(
+      (course: any) => course?._id?.toString() === courseId
+    );
+
+  if(!courseExists){
+    return next(new ErrorHandler("You are not eligible for this course", 403));
+  }
+  const course=await CourseModel.findById(courseId);
+  const { review, rating } = req.body as IAddReviewData;
+  const ReviewData: any = {
+  user: req.user,
+  comment: review,
+  rating: rating,
+  };
+  course?.reviews.push(ReviewData);
+  let avg=0;
+  course?.reviews.forEach((rev:any)=>{
+    avg+=rev.rating;
+  })
+  if(course){
+    course.ratings=avg/course.reviews.length;
+  }
+  await course?.save();
+  const notification={
+        user: req.user?._id,
+        title: "New Review Received",
+        message: `${req.user?.name} has given a new review for ${course?.name}`,
+  }
+  res.status(200).json({
+        success: true,
+        course,
+  })
+}  catch (error:any) {
+  return next(new ErrorHandler(error.message, 500));
+}
+});
