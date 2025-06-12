@@ -1,6 +1,7 @@
 import express from "express";
 import {
   activateUser,
+  getAllUsers,
   getUserInfo,
   LoginUser,
   LogoutUser,
@@ -23,4 +24,5 @@ UserRouter.get("/social-auth", socialAuth);
 UserRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
 UserRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
 UserRouter.put("/update-user-avatar", isAuthenticated, updateUserProfilePicture);
+UserRouter.get("/get-all-users", isAuthenticated, authorizeRoles('admin'),getAllUsers);
 export default UserRouter;
