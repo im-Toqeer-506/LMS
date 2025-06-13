@@ -7,7 +7,7 @@ import { catchAsyncErrors } from "./catchAsyncErrors";
 //Authenticated User....
 export const isAuthenticated = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
-    const access_token = req.cookies?.access_token;
+    const access_token = req.cookies?.access_token as string;
     if (!access_token) {
       return next(
         new ErrorHandler("Please login to access this resource", 400)
@@ -22,7 +22,7 @@ export const isAuthenticated = catchAsyncErrors(
     }
     const user = await redis.get(decode.id);
     if (!user) {
-      return next(new ErrorHandler("User Not Found!", 400));
+      return next(new ErrorHandler("Please login to access this resourse", 400));
     }
     req.user = JSON.parse(user);
     next();
