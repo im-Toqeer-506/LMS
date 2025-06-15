@@ -9,6 +9,7 @@ import ejs from "ejs"
 import sendMail from "../utils/sendMail";
 import NotificationModel from "../models/notification.model";
 import { getAllOrdersService, newOrder } from "../services/order.service";
+import { redis } from "../utils/redis";
 //create Model 
 export const createOrder=catchAsyncErrors(async(req:Request,res:Response,next:NextFunction)=>{
  try {
@@ -49,6 +50,7 @@ export const createOrder=catchAsyncErrors(async(req:Request,res:Response,next:Ne
     return next(new ErrorHandler(error.message, 400));
     } 
     user?.courses.push(course?._id);
+    await redis.set(req.user!._id, JSON.stringify(user));
     await user?.save();
     course.purchased = (course.purchased || 0) + 1;
     await course.save();
