@@ -1,32 +1,32 @@
-'use client'
-import React,{FC,useState} from "react"
-import  Heading from "./utils/Heading";
+"use client";
+import React, { FC, useState } from "react";
+import Heading from "./utils/Heading";
 import Header from "./components/Header";
-import Hero from "./components/Route/Hero"
+import Hero from "./components/Route/Hero";
 
-interface Props{
-
-}
-const Page:FC<Props> =(props)=>{
-  const [open,setOpen]=useState(false);
-  const [activeItem,setActiveItem]=useState(0);
+interface Props {}
+const Page: FC<Props> = (props) => {
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
+  const [route,setRoute]=useState('Login');
 
   return (
     <div>
-      <Heading 
-      title="ELearning"
-      description="ELearning is a platform for online learning and education."
-      keywords="ELearning, online learning, education, courses, tutorials, training"
+      <Heading
+        title="ELearning"
+        description="ELearning is a platform for online learning and education."
+        keywords="ELearning, online learning, education, courses, tutorials, training"
       />
       <Header 
-      open={open}
-      setOpen={setOpen}
-      activeItem={activeItem}
+      open={open} 
+      setOpen={setOpen} 
+      activeItem={activeItem} 
+      setRoute={setRoute}
+      route={route}
       />
-      <Hero/>
+      <Hero />
     </div>
-  )
-}
+  );
+};
 
-
-export default Page; 
+export default Page;

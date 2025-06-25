@@ -2,16 +2,21 @@ import Link from "next/link";
 import React, { FC, useState } from "react";
 import NavItems from "../utils/NavItem";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
+import CustomModel from "../utils/CustomModel";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
-
+import Login from "../components/Auth/Login";
+import SignUP from "../components/Auth/SignUp";
+import Verification from "../components/Auth/Verification";
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   activeItem: number;
+  route: string;
+  setRoute: (route: string) => void;
 };
 
-const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
+const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
   if (typeof window != "undefined") {
@@ -30,6 +35,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
   };
   return (
     <div className="w-full relative ">
+      {/* Sticky and styled header depending on scroll */}
       <div
         className={`${
           active
@@ -39,6 +45,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
       >
         <div className="w-[95%] 800px:w-[92%] m-auto py-2  h-full">
           <div className="w-full h-[80px] flex items-center justify-between p-3">
+            {/* Logo */}
             <div>
               <Link
                 href={"/"}
@@ -47,11 +54,13 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
                 ELearning
               </Link>
             </div>
-
+            {/* Navigation section */}
             <div className="flex items-center">
+              {/* Desktop nav items */}
               <NavItems activeItem={activeItem} isMobile={false} />
+              {/* Theme toggle */}
               <ThemeSwitcher />
-              {/* Only for mobiles */}
+              {/* Mobile menu icon */}
               <div className="800px:hidden ">
                 <HiOutlineMenuAlt3
                   className="cursor-pointer dark:text-white text-black  "
@@ -66,7 +75,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
             </div>
           </div>
         </div>
-        {/* Mobile sidebar */}
+        {/* Mobile sidebar menu */}
         {openSideBar && (
           <div
             className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024]"
@@ -89,6 +98,33 @@ const Header: FC<Props> = ({ activeItem, setOpen, open }) => {
           </div>
         )}
       </div>
+      {route === "Login" && open && (
+        <CustomModel
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={Login}
+        />
+      )}
+      {route === "Sign-Up" && open && (
+        <CustomModel
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={SignUP}
+        />
+      )}
+      {route === "verfication" && open && (
+        <CustomModel
+          open={open}
+          setOpen={setOpen}
+          setRoute={setRoute}
+          activeItem={activeItem}
+          component={Verification}
+        />
+      )}
     </div>
   );
 };
