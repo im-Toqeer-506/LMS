@@ -22,7 +22,7 @@ UserRouter.post("/login", LoginUser);
 UserRouter.get("/logout", isAuthenticated, LogoutUser);
 UserRouter.get("/refresh-token", updateAccessToken);
 UserRouter.get("/me", isAuthenticated, getUserInfo);
-UserRouter.get("/social-auth", socialAuth);
+UserRouter.post("/social-auth", socialAuth);
 UserRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
 UserRouter.put("/update-user-password", isAuthenticated, updateUserPassword);
 UserRouter.put(

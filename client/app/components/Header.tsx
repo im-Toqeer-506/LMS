@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import NavItems from "../utils/NavItem";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import CustomModel from "../utils/CustomModel";
@@ -7,6 +7,12 @@ import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import Login from "../components/Auth/Login";
 import SignUP from "../components/Auth/SignUp";
 import Verification from "../components/Auth/Verification";
+import { useSelector } from "react-redux";
+import Image from "next/image";
+import avatar from "../../public/assets/avatardefault.jpg";
+import { useSession } from "next-auth/react";
+import { useSocialAuthMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 type Props = {
   open: boolean;
@@ -19,6 +25,25 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
+  const { user } = useSelector((state: any) => state.auth);
+  const { data } = useSession();
+  const [socialAuth, { isSuccess }] = useSocialAuthMutation();
+
+  useEffect(() => {
+    if (!user) {
+      if (data) {
+        socialAuth({
+          email: data?.user?.email,
+          name: data?.user?.name,
+          avatar: data?.user?.image,
+        });
+      }
+    }
+    if (isSuccess) {
+      toast.success("Login Successflly!");
+    }
+  }, [data, user, isSuccess]);
+
   if (typeof window != "undefined") {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 80) {
@@ -67,11 +92,21 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
                   onClick={() => setOpenSideBar(true)}
                 />
               </div>
-              <HiOutlineUserCircle
-                size={25}
-                className="cursor-pointer hidden   800px:block dark:text-white text-black  "
-                onClick={() => setOpen(true)}
-              />
+              {user ? (
+                <Link href={"/profile"}>
+                  <Image
+                    src={user.avatar ? user.avatar : avatar}
+                    alt=""
+                    className="w-[30px] h-[30px] rounded-full cursor-pointer"
+                  />
+                </Link>
+              ) : (
+                <HiOutlineUserCircle
+                  size={25}
+                  className="cursor-pointer hidden   800px:block dark:text-white text-black  "
+                  onClick={() => setOpen(true)}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -80,7 +115,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
           <div
             className="fixed w-full h-screen top-0 left-0 z-[99999] dark:bg-[unset] bg-[#00000024]"
             onClick={handleClose}
-            id="scren"
+            id="screen"
           >
             <div className="w-[70%] fixed z-[999999999] h-screen bg-white top-0 right-0 dark:bg-slate-900 dark:bg-opacity-90">
               <NavItems activeItem={activeItem} isMobile={true} />
@@ -116,7 +151,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
           component={SignUP}
         />
       )}
-      {route === "verfication" && open && (
+      {route === "verification" && open && (
         <CustomModel
           open={open}
           setOpen={setOpen}
