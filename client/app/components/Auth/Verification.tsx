@@ -1,4 +1,4 @@
-import { useActivationMutation } from "@/redux/features/auth/authApi";
+import { useActivationMutation } from "../../../redux/features/auth/authApi";
 import { styles } from "../../../app/styles/styles";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";

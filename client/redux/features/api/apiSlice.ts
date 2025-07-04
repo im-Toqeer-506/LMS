@@ -30,7 +30,7 @@ export const apiSlice = createApi({
             })
           );
         } catch (error) {
-          console.error((error as any)?.data?.message);
+          console.log((error as any)?.data?.message);
         }
       },
     }),
