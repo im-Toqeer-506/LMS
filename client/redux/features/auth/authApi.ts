@@ -110,5 +110,5 @@ export const {
   useActivationMutation,
   useLoginMutation,
   useSocialAuthMutation,
-  useLogoutQuery
+  useLogoutQuery,
 } = authApi;

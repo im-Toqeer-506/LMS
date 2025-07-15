@@ -21,6 +21,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
   const [invalidError, setInvalidError] = useState<boolean>(false);
   const { token } = useSelector((state: any) => state.auth);
   const [activation, { isSuccess, error }] = useActivationMutation();
+  //Handling the API response
   useEffect(() => {
     if (isSuccess) {
       toast.success("Account Activated Successfully!");
@@ -52,7 +53,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
     4: "",
     5: "",
   });
-
+  // Handle OTP verification
   const verificationHandler = async () => {
     const verificationNumber = Object.values(verifyNumber).join("");
     if (verificationNumber.length !== 6) {
@@ -64,6 +65,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
       activation_code: verificationNumber,
     });
   };
+  // Handle input change Focus Next box
   const handleInputChange = (index: number, value: string) => {
     setInvalidError(false);
     const newVerifyNumber = { ...verifyNumber, [index]: value };

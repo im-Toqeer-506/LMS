@@ -5,14 +5,17 @@ import {
   getNotifications,
   updateNotificationStatus,
 } from "../controllers/notification.controller";
+import { updateAccessToken } from "../controllers/user.controller";
 notificationRouter.get(
   "/get-all-notifications",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   getNotifications
 );
 notificationRouter.put(
   "/update-notification/:id",
+  updateAccessToken,
   isAuthenticated,
   authorizeRoles("admin"),
   updateNotificationStatus

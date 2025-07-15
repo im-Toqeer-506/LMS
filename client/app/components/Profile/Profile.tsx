@@ -17,7 +17,7 @@ const Profile: FC<Props> = ({ user }) => {
   const {} = useLogoutQuery(undefined, {
     skip: !logout ? true : false,
   });
-
+// This line tries to run the logout API automatically without mutation
   const logOutHandler = async () => {
     SetLogOut(true);
     await signOut();

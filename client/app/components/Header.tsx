@@ -16,6 +16,7 @@ import {
   useSocialAuthMutation,
 } from "../../redux/features/auth/authApi";
 import toast from "react-hot-toast";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   open: boolean;
@@ -30,45 +31,57 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [openSideBar, setOpenSideBar] = useState(false);
   const { user } = useSelector((state: any) => state.auth);
   const { data } = useSession();
-  const [socialAuth, { isSuccess }] = useSocialAuthMutation();
+  const { data: userData, isLoading, refetch } = useLoadUserQuery(
+    undefined,
+    {}
+  );
+  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
   const [logout, SetLogOut] = useState(false);
   const {} = useLogoutQuery(undefined, {
     skip: !logout ? true : false,
   });
+  // Handles user authentication  based on social login data , loading state, and login success.
   useEffect(() => {
-    if (!user) {
-      if (data) {
-        socialAuth({
-          email: data?.user?.email,
-          name: data?.user?.name,
-          avatar: data?.user?.image,
-        });
+    // If no user is found in Redux but NextAuth session exists, it means
+    // the user logged in via social login and we need to sync with our backend
+    if (!isLoading) {
+      if (!userData) {
+        if (data) {
+          socialAuth({
+            email: data?.user?.email,
+            name: data?.user?.name,
+            avatar: data?.user?.image,
+          });
+          refetch();
+        }
       }
     }
-    if (data === null) {
-      if (isSuccess) {
-        toast.success("Login Successflly!");
-      }
+    if (data === null && isSuccess) {
+      toast.success("Welcome back to ELearning!");
+      setOpen(false);
     }
-    if (data === null && !data) {
-      SetLogOut(true);
-    }
-  }, [data, user, isSuccess]);
-
-  if (typeof window != "undefined") {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 80) {
+    // if (data === null && !isLoading && !userData) {
+    //   SetLogOut(true);
+    // }
+  }, [data, isLoading, isSuccess, refetch, setOpen, socialAuth, userData]);
+  //Based on the user Scrool change the scroll at once
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 85) {
         setActive(true);
       } else {
         setActive(false);
       }
-    });
-  }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const handleClose = (e: any) => {
     if (e.target.id === "screen") {
       setOpenSideBar(false);
     }
   };
+  const { status, data: session } = useSession();
   return (
     <div className="w-full relative ">
       {/* Sticky and styled header depending on scroll */}
