@@ -1,21 +1,31 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, Modal } from "@mui/material";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { FiEdit2 } from "react-icons/fi";
-import { useGetAllCourseQuery } from "@/redux/features/courses/courseApi";
+import {
+  useDeleteCourseMutation,
+  useGetAllCourseQuery,
+} from "@/redux/features/courses/courseApi";
 import Loader from "../../Loader/Loader";
-import { RiMailSettingsFill } from "react-icons/ri";
-import { format } from "timeago.js"
+
+import { format } from "timeago.js";
+import toast from "react-hot-toast";
+import { styles } from "@/app/styles/styles";
 type Props = {};
 
 const AllCourses = (props: Props) => {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
-  const { isLoading, data, error } = useGetAllCourseQuery({});
+  const [courseId, setCourseId] = useState("");
+  const { isLoading, data, refetch } = useGetAllCourseQuery(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const [deleteCourse, { isSuccess, error }] = useDeleteCourseMutation({});
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "title", headerName: "Course Title", flex: 1 },
@@ -46,7 +56,7 @@ const AllCourses = (props: Props) => {
             <Button
               onClick={() => {
                 setOpen(!open);
-                // setCourseId(params.row.id);
+                setCourseId(params.row.id);
               }}
             >
               <AiOutlineDelete
@@ -71,7 +81,24 @@ const AllCourses = (props: Props) => {
       });
     });
   }
+  useEffect(() => {
+    if (isSuccess) {
+      setOpen(false);
+      refetch();
+      toast.success("Course Deleted Successfully");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorMessage = error as any;
+        toast.error(errorMessage.data.message);
+      }
+    }
+  }, [isSuccess, error, refetch]);
 
+  const handleDelete = async () => {
+    const id = courseId;
+    await deleteCourse(id);
+  };
   return (
     <>
       {isLoading ? (
@@ -172,6 +199,35 @@ const AllCourses = (props: Props) => {
                 }}
               />
             </Box>
+
+            {open && (
+              <Modal
+                open={open}
+                onClose={() => setOpen(!open)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white dark:bg-slate-900 rounded-[8px] shadow p-4 outline-none">
+                  <h1 className={`${styles.title}`}>
+                    Are you sure you want to delete this course?
+                  </h1>
+                  <div className="flex w-full items-center justify-between mb-6 mt-4">
+                    <div
+                      className={`${styles.button} !w-[120px] h-[30px] bg-[#47d097]`}
+                      onClick={() => setOpen(!open)}
+                    >
+                      Cancel
+                    </div>
+                    <div
+                      className={`${styles.button} !w-[120px] h-[30px] bg-[#d63f3f]`}
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </div>
+                  </div>
+                </Box>
+              </Modal>
+            )}
           </Box>
         </div>
       )}

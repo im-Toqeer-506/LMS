@@ -32,7 +32,6 @@ const CoursePreview: FC<Props> = ({
     handleCourseCreate();
   };
 
-
   return (
     <div className="w-[90%] m-auto py-5 mb-5 text-black dark:text-white">
       <div className="w-full relative">
@@ -106,6 +105,20 @@ const CoursePreview: FC<Props> = ({
           </h1>
         </div>
         {courseData?.benefits?.map((item: any, index: number) => (
+          <div className="w-full flex 800px:items-center py-2" key={index}>
+            <div className="w-[15px] mr-1 text-[#37a39a] dark:text-[#3ccba0]">
+              <IoCheckmarkDoneOutline size={20} />
+            </div>
+            <p className="pl-2 dark:text-white text-black">{item.title}</p>
+          </div>
+        ))}
+        <br />
+        <br />
+        <br />
+        <h1 className="text-[25px] font-Poppins font-[600] dark:text-white text-black">
+          What are the prerequisites for starting this course?
+        </h1>
+        {courseData?.prerequisites?.map((item: any, index: number) => (
           <div className="w-full flex 800px:items-center py-2" key={index}>
             <div className="w-[15px] mr-1 text-[#37a39a] dark:text-[#3ccba0]">
               <IoCheckmarkDoneOutline size={20} />

@@ -24,29 +24,29 @@ const CourseContent: FC<Props> = ({
     Array(courseContentData.length).fill(true)
   );
   const [activeSection, setActiveSection] = useState(1);
-   // Prevents default form submission behavior
+  // Prevents default form submission behavior
   const handleSubmit = (e: any) => {
     e.preventDefault();
   };
-  // Toggles visibility (expand/collapse) 
+  // Toggles visibility (expand/collapse)
   const handleCollapseToggle = (index: number) => {
     const updatedCollapsed = [...isCollapsed];
     updatedCollapsed[index] = !updatedCollapsed[index];
     setIsCollapsed(updatedCollapsed);
   };
-  // Removes a link 
+  // Removes a link
   const handleRemoveLink = (index: number, linkIndex: number) => {
     const updatedData = [...courseContentData];
     updatedData[index].links.splice(linkIndex, 1);
     setCourseContentData(updatedData);
   };
-  // Adds a new empty link 
+  // Adds a new empty link
   const handleAddLink = (index: number) => {
     const updatedData = [...courseContentData];
     updatedData[index].links.push({ title: "", url: "" });
     setCourseContentData(updatedData);
   };
-   // Ensures all required fields 
+  // Ensures all required fields
   const newContentHandler = (item: any) => {
     if (
       item.title === "" ||
@@ -83,7 +83,7 @@ const CourseContent: FC<Props> = ({
       setCourseContentData([...courseContentData, newContent]);
     }
   };
-  // Adds a new video content 
+  // Adds a new video content
   const addNewSection = () => {
     if (
       courseContentData[courseContentData.length - 1].title === "" ||
@@ -132,6 +132,7 @@ const CourseContent: FC<Props> = ({
     <div className="w-[100%] 800px:w-[80%] m-auto mt-15 800px:mt-24 p-3">
       <form onSubmit={handleSubmit}>
         {courseContentData?.map((item: any, index: number) => {
+          // Show section input for the first item or when the section changes from the previous item
           const showSectionInput =
             index === 0 ||
             item.videoSection !== courseContentData[index - 1].videoSection;
@@ -153,8 +154,13 @@ const CourseContent: FC<Props> = ({
                       } font-Poppins cursor-pointer dark:text-white text-black bg-transparent outline-none`}
                       type="text"
                       onChange={(e) => {
-                        const updatedData = [...courseContentData];
-                        updatedData[index].videoSection = e.target.value;
+                        const updatedData = courseContentData.map(
+                          (content: any, i: number) => {
+                            return i === index
+                              ? { ...content, videoSection: e.target.value }
+                              : content;
+                          }
+                        );
                         setCourseContentData(updatedData);
                       }}
                       value={item.videoSection}
@@ -203,6 +209,7 @@ const CourseContent: FC<Props> = ({
                   />
                 </div>
               </div>
+              {/* if is collasped is true then we will see all the input fileds */}
               {!isCollapsed[index] && (
                 <>
                   <div className="my-3">

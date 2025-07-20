@@ -11,11 +11,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
-//always refreesh the accesstokem on every page reload
+//only load user
 const initializeApp = async () => {
-  await store.dispatch(
-    apiSlice.endpoints.refreshtoken.initiate({}, { forceRefetch: true })
-  );
+
   await store.dispatch(
     apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
   );

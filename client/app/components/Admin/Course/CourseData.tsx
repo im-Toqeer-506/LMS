@@ -22,25 +22,30 @@ const CourseData: FC<Props> = ({
 }) => {
   // Updating the title of a benefit at a specific index
   const handleBenefitChange = (index: number, value: any) => {
-    const updatedBenefits = [...benefits];
-    updatedBenefits[index].title = value;
+    const updatedBenefits = benefits.map((b, i) =>
+      i == index ? { ...b, title: value } : b
+    );
     setBenefits(updatedBenefits);
   };
 
   // Adds a new empty benefit input field
   const handleAddPrerequisites = () => {
+    setPrerequisites([...prequisites, { title: "" }]);
+  };
+  const handleAddBenefit = () => {
     setBenefits([...benefits, { title: "" }]);
   };
-    // Updates the title of a prerequisite at a specific index
+  // Updates the title of a prerequisite at a specific index
   const handlePrerequisitesChange = (index: number, value: any) => {
-    const updatedPrerequisites = [...prequisites];
-    updatedPrerequisites[index].title = value;
+    const updatedPrerequisites = prequisites.map((p, i) =>
+      i === index ? { ...p, title: value } : p
+    );
     setPrerequisites(updatedPrerequisites);
   };
   const prevButton = () => {
     setActive(active - 1);
   };
-   // Validates all inputs and moves to the next step if filled, otherwise shows error
+  // Validates all inputs and moves to the next step if filled, otherwise shows error
   const handleOptions = () => {
     if (
       benefits[benefits.length - 1]?.title !== "" &&
@@ -72,7 +77,7 @@ const CourseData: FC<Props> = ({
         ))}
         <AiOutlinePlusCircle
           style={{ margin: "10px 0px", cursor: "pointer", width: "30px" }}
-          onClick={handleAddPrerequisites}
+          onClick={handleAddBenefit}
         />
       </div>
       <div>
