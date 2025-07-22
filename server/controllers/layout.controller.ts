@@ -37,12 +37,11 @@ export const createLayout = catchAsyncErrors(
       if(type==='FAQ'){
         const {faq}=req.body;
         // Validate faq structure
-        const faqItems=await Promise.all(faq.map(async(item:any)=>{
-            return {
-                question: item.question,
-                answer: item.answer
-            }
-        }))
+      const faqItems = faq.map((item: any) => ({
+      question: item.question,
+      answer: item.answer
+      }));
+
         await LayoutModel.create({type:'FAQ',faq:faqItems});
       }
       if(type==='Categories'){
@@ -75,23 +74,20 @@ try {
         return next(new ErrorHandler("Banner not found", 404));
     }
     const { image, title, subTitle } = req.body;
-    await cloudinary.v2.uploader.destroy(bannerData?.image.public_id);
-    const myCloud = await cloudinary.v2.uploader.upload(image, {
+    const data=image.startsWith('https')? bannerData: await cloudinary.v2.uploader.upload(image, {
         folder: "Banner",
     });
     const banner = {
     type: "Banner",
-    banner: {
     image: {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
+        public_id:image.startsWith('https')?bannerData.banner.image.public_id:data.public_id,
+        url: image.startsWith('https') ?bannerData.banner.image.url:data.secure_url,
     },
     title,
     subTitle,
-    },
     };
 
-    await LayoutModel.findByIdAndUpdate(bannerData._id, {banner});;
+    await LayoutModel.findByIdAndUpdate(bannerData._id, {banner});
 }
     if(type==='FAQ'){
     const {faq}=req.body;
@@ -136,7 +132,7 @@ try {
 export const getLayoutByType = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { type } = req.body;
+        const { type } = req.params;
         const layout=await LayoutModel.findOne({type});
 
         res.status(200).json({

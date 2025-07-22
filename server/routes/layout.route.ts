@@ -15,7 +15,7 @@ layoutRouter.put("/edit-layout",
     authorizeRoles("admin"),
     editLayout
 );
-layoutRouter.get("/get-layout",
+layoutRouter.get("/get-layout/:type",
     getLayoutByType
 );
 export default layoutRouter;
