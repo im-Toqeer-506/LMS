@@ -22,7 +22,7 @@ const Page = (props: Props) => {
         </div>
         {/* Dashboard Hero */}
         <div className="w-4/5 p-4">
-          <DashboardHero />
+          <DashboardHero isDashboard={true} />
         </div>
       </div>
     </AdminProtected>
