@@ -1,4 +1,5 @@
 "use client";
+import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,9 @@ type Props = {};
 const Hero: FC<Props> = (props) => {
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const { data, refetch } = useGetHeroDataQuery("Banner", {
+    refetchOnMountOrArgChange: true,
+  });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ const Hero: FC<Props> = (props) => {
         {/* Hero banner Image */}
         <div className="lg:w-1/2 flex items-center justify-center z-10 mb-8 lg:mb-0">
           <Image
-            src={require("../../../public/assets/hero-banner-1.png")}
+            src={data?.layout?.banner?.image.url}
             width={400}
             height={400}
             alt="Hero Banner"
@@ -35,13 +39,11 @@ const Hero: FC<Props> = (props) => {
         <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
           {/* Main headline */}
           <h1 className="text-3xl lg:text-5xl font-bold text-gray-800 dark:text-white mb-4 leading-tight">
-            {"Improve Your Online Learning Experience"}
+            {data?.layout?.banner?.title}
           </h1>
           {/* Subtitle or description */}
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-lg">
-            {
-              "We have 20K+ Online courses & 500k+ Online registered students. Find your desired courses from them."
-            }
+            {data?.layout?.banner?.subTitle}
           </p>
           {/* Search form */}
           <form onSubmit={handleSearch} className="w-full max-w-md mb-8">
