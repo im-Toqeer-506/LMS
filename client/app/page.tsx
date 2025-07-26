@@ -6,6 +6,7 @@ import Hero from "./components/Route/Hero";
 import Courses from "./components/Route/Courses";
 import Reviews from "./components/Route/Reviews";
 import FAQ from "./components/Route/FAQ";
+import Footer from "./components/Footer/Footer"
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 interface Props {}
 
@@ -35,6 +36,7 @@ const Page: FC<Props> = (props) => {
       <Courses />
       <Reviews />
       <FAQ />
+      <Footer/>
     </div>
   );
 };
