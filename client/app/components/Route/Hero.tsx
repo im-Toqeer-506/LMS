@@ -27,13 +27,13 @@ const Hero: FC<Props> = (props) => {
         <div className="absolute top-[75px] lg:left-[100px]  w-[300px] h-[300px] lg:w-[500px] lg:h-[500px] hero_animation rounded-full opacity-20 lg:opacity-30"></div>
         {/* Hero banner Image */}
         <div className="lg:w-1/2 flex items-center justify-center z-10 mb-8 lg:mb-0">
-          <Image
+        { data&& <Image
             src={data?.layout?.banner?.image.url}
             width={400}
             height={400}
             alt="Hero Banner"
             className="object-contain w-full max-w-[300px] lg:max-w-[400px] h-auto"
-          />
+          />}
         </div>
         {/* Hero content section */}
         <div className="lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
