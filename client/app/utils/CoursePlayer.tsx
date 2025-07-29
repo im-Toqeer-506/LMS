@@ -17,7 +17,6 @@ const CoursePlayer: FC<Props> = ({ videoUrl }) => {
         videoId: videoUrl,
       })
       .then((res) => {
-        console.log("API Response:", res.data);
         setVideoData(res.data);
       })
       .catch((err) => {
