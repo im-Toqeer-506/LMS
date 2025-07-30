@@ -10,7 +10,6 @@ type Props = {
 };
 
 const CourseContentList: FC<Props> = (props: Props) => {
-  console.log(props.data);
   const [visibleSection, SetVisibleSection] = useState<Set<string>>(
     new Set<string>()
   );
