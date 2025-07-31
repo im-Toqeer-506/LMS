@@ -14,10 +14,12 @@ type Props = {
   stripePromise: any;
 };
 import CheckOutForm from "../Payment/CheckOutForm";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
-  const { user } = useSelector((state: any) => state.auth);
+ const {data:userData}=useLoadUserQuery({},undefined)
   const [open, setOpen] = useState(false);
+  const user=userData?.user;
   //persentage logic
   const discountPercentage =
     ((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100;
