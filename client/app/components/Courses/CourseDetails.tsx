@@ -15,11 +15,13 @@ type Props = {
 };
 import CheckOutForm from "../Payment/CheckOutForm";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
+import Image from "next/image";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
- const {data:userData}=useLoadUserQuery({},undefined)
+  const { data: userData } = useLoadUserQuery({}, undefined);
   const [open, setOpen] = useState(false);
-  const user=userData?.user;
+  const user = userData?.user;
   //persentage logic
   const discountPercentage =
     ((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100;
@@ -135,11 +137,17 @@ const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
                     {/* Review item */}
                     <div className="flex">
                       <div className="w-[50px] h-[50px]">
-                        <div className="w-[50px] h-[50px] bg-slate-600 rounded-[50px] flex items-center justify-center cursor-pointer">
-                          <h1 className="uppercase text-[18px] text-black dark:text-white">
-                            {item.user.name.slice(0, 2)}
-                          </h1>
-                        </div>
+                        <Image
+                          src={
+                            item.user?.avatar
+                              ? item.user.avatar.url
+                              : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
+                          }
+                          width={50}
+                          height={50}
+                          alt=""
+                          className="w-[50px] h-[50px] rounded-full object-cover"
+                        />
                       </div>
                       <div className="hidden 800px:block pl-2">
                         <div className="flex items-center">
@@ -156,12 +164,36 @@ const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
                         </small>
                       </div>
                     </div>
-                    <div className="pl-2 flex 800px:hidden items-center">
-                      <h5 className="text-[18px] pr-2 text-black dark:text-white">
-                        {item.user.name}
-                      </h5>
-                      <Ratings rating={item.rating} />
-                    </div>
+                    {/* Replies */}
+
+                    {/* Comment Replies */}
+                    {item.commentReplies.map((i: any, index: number) => (
+                      <div className="w-full flex 800px:ml-16 my-5" key={index}>
+                        <div className="w-[50px] h-[50px]">
+                          <Image
+                            src={
+                              i.user.avatar
+                                ? i.user.avatar.url
+                                : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
+                            }
+                            width={50}
+                            height={50}
+                            alt=""
+                            className="w-[50px] h-[50px] rounded-full object-cover"
+                          />
+                        </div>
+                        <div className="pl-2">
+                          <div className="flex items-center">
+                            <h5 className="text-[20px]">{i.user.name}</h5>
+                            <VscVerifiedFilled  className="text-[#0095F6] ml-2 text-[20px]" />
+                          </div>
+                          <p>{i.comment}</p>
+                          <small className="text-[#ffffff83]">
+                            {format(i.createdAt)} •
+                          </small>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ))}
             </div>
