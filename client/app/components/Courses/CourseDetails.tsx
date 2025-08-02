@@ -2,7 +2,7 @@ import { styles } from "@/app/styles/styles";
 import CoursePlayer from "@/app/utils/CoursePlayer";
 import Ratings from "@/app/utils/Ratings";
 import Link from "next/link";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { format } from "timeago.js";
@@ -12,16 +12,27 @@ type Props = {
   data: any;
   clientSecret: string;
   stripePromise: any;
+  setOpen: any;
+  setRoute: any;
 };
 import CheckOutForm from "../Payment/CheckOutForm";
 import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import Image from "next/image";
 import { VscVerifiedFilled } from "react-icons/vsc";
 
-const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
+const CourseDetails: FC<Props> = ({
+  data,
+  stripePromise,
+  clientSecret,
+  setRoute,
+  setOpen: OpenAuthModel,
+}) => {
   const { data: userData } = useLoadUserQuery({}, undefined);
   const [open, setOpen] = useState(false);
-  const user = userData?.user;
+  const [user, setUser] = useState<any>();
+  useEffect(() => {
+    setUser(userData.user);
+  }, [userData]);
   //persentage logic
   const discountPercentage =
     ((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100;
@@ -31,7 +42,12 @@ const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
   const isPurchased =
     user && user.courses?.find((item: any) => item._id === data._id);
   const handleOrder = (e: any) => {
-    setOpen(true);
+    if (user) {
+      setOpen(true);
+    } else {
+      setRoute("Login");
+      OpenAuthModel(true);
+    }
   };
   return (
     <>
@@ -185,7 +201,7 @@ const CourseDetails: FC<Props> = ({ data, stripePromise, clientSecret }) => {
                         <div className="pl-2">
                           <div className="flex items-center">
                             <h5 className="text-[20px]">{i.user.name}</h5>
-                            <VscVerifiedFilled  className="text-[#0095F6] ml-2 text-[20px]" />
+                            <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
                           </div>
                           <p>{i.comment}</p>
                           <small className="text-[#ffffff83]">
