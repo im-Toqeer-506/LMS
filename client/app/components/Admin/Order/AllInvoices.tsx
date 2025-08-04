@@ -27,8 +27,8 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
   useEffect(() => {
     if (OrdersData && UsersData && CoursesData) {
       const temp = OrdersData.orders.map((order: any) => {
-        const user = UsersData.user.find((u: any) => u._id === order.userId);
-        const course = CoursesData.find((c: any) => c._id === order.courseId);
+        const user = UsersData.users.find((u: any) => u._id === order.userId);
+        const course = CoursesData.courses.find((c: any) => c._id === order.courseId);
         return {
           ...order,
           userName: user?.name,
@@ -75,7 +75,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
     userEmail: item.userEmail,
     title: item.title,
     price: item.price,
-    formattedDate: item.formattedDate,
+    formattedDate: item.createdAt,
   }));
   return (
     <div className={!isDashboard ? "mt-[120px]" : "mt-[0px]"}>

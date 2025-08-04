@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import Heading from "../utils/Heading";
 import { styles } from "../styles/styles";
 import CourseCard from "../components/Courses/CourseCard";
+import Footer from "../components/Footer/Footer";
 type Props = {};
 const Page = (props: Props) => {
   const searchParams = useSearchParams();
@@ -106,6 +107,7 @@ const Page = (props: Props) => {
                 ))}
             </div>
           </div>
+          <Footer/>
         </>
       )}
     </>

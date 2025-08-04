@@ -18,32 +18,32 @@ type Props = {
 const UserAnalytics: FC<Props> = ({ isDashboard }) => {
   const { data, isLoading } = useGetUsersAnalyticsQuery({});
 
-  // const analyticsData: any = [];
+  const analyticsData: any = [];
+  if (data && data.users && data.users.last12Months) {
+    data.users.last12Months.forEach((item: any) => {
+      analyticsData.push({
+        name: item.month,
+        count: item.count,
+      });
+    });
+  }
 
-  // if (data && data.users && data.users.last12Months) {
-  //   data.users.last12Months.forEach((item: any) => {
-  //     analyticsData.push({
-  //       name: item.month,
-  //       uv: item.count,
-  //     });
-  //   });
-  // }
-
-  //once with dummy data
-  const analyticsData = [
-    { name: "January 2024", count: 512 },
-    { name: "February 2024", count: 7890 },
-    { name: "March 2024", count: 3988 },
-    { name: "April 2024", count: 4620 },
-    { name: "May 2024", count: 2176 },
-    { name: "June 2024", count: 3290 },
-    { name: "July 2024", count: 488 },
-    { name: "August 2024", count: 5932 },
-    { name: "September 2024", count: 1435 },
-    { name: "October 2024", count: 6720 },
-    { name: "November 2024", count: 5301 },
-    { name: "December 2024", count: 620 },
-  ];
+  
+  // // once with dummy data
+  // const analyticsData = [
+  //   { name: "January 2024", count: 512 },
+  //   { name: "February 2024", count: 7890 },
+  //   { name: "March 2024", count: 3988 },
+  //   { name: "April 2024", count: 4620 },
+  //   { name: "May 2024", count: 2176 },
+  //   { name: "June 2024", count: 3290 },
+  //   { name: "July 2024", count: 488 },
+  //   { name: "August 2024", count: 5932 },
+  //   { name: "September 2024", count: 1435 },
+  //   { name: "October 2024", count: 6720 },
+  //   { name: "November 2024", count: 5301 },
+  //   { name: "December 2024", count: 620 },
+  // ];
 
   return (
     <>

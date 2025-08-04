@@ -27,11 +27,11 @@ const CourseDetails: FC<Props> = ({
   setRoute,
   setOpen: OpenAuthModel,
 }) => {
-  const { data: userData } = useLoadUserQuery({}, undefined);
+  const { data: userData } = useLoadUserQuery(undefined, {});
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<any>();
   useEffect(() => {
-    setUser(userData.user);
+    setUser(userData?.user);
   }, [userData]);
   //persentage logic
   const discountPercentage =
@@ -285,7 +285,7 @@ const CourseDetails: FC<Props> = ({
                 */}
                 {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckOutForm setOpen={setOpen} data={data} />
+                    <CheckOutForm setOpen={setOpen} data={data} user={user} />
                   </Elements>
                 )}
               </div>

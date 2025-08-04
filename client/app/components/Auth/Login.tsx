@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 type Props = {
   setRoute: (route: string) => void;
   setOpen: (route: boolean) => void;
+  refetch: () => void;
 };
 
 const schema = Yup.object().shape({
@@ -24,7 +25,7 @@ const schema = Yup.object().shape({
     .required("Please Enter Your Email!"),
   password: Yup.string().required("Please Enter Your Password!").min(6),
 });
-const Login: FC<Props> = ({ setRoute, setOpen }) => {
+const Login: FC<Props> = ({ setRoute, setOpen, refetch }) => {
   const [show, setShow] = useState(false);
   const [login, { isSuccess, error }] = useLoginMutation();
   const formik = useFormik({
@@ -39,6 +40,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
     if (isSuccess) {
       toast.success("Login Successfully!");
       setOpen(false);
+      refetch();
     }
     if (error) {
       if ("data" in error) {
@@ -46,7 +48,7 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, setOpen,refetch]);
 
   return (
     <div className="w-full">

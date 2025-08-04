@@ -19,21 +19,20 @@ type Props = {
 
 const OrdersAnalytics: FC<Props> = ({ isDashboard }) => {
   const { data, isLoading } = useGetOrdersAnalyticsQuery({});
-  //   const analyticsData: any = [];
-  //   data?.orders?.last12Months?.forEach((item: any) => {
-  //     analyticsData.push({ name: item.name, Count: item.count });
-  //   });
-
+    const analyticsData: any = [];
+    data?.orders?.last12Months?.forEach((item: any) => {
+      analyticsData.push({ name: item.month, Count: item.count });
+    });
   //Once with Dummy Data
-  const analyticsData = [
-    { name: "Page A", Count: 4000 },
-    { name: "Page B", Count: 3000 },
-    { name: "Page C", Count: 5000 },
-    { name: "Page D", Count: 1000 },
-    { name: "Page E", Count: 4000 },
-    { name: "Page F", Count: 800 },
-    { name: "Page G", Count: 200 },
-  ];
+  // const analyticsData = [
+  //   { name: "Page A", Count: 4000 },
+  //   { name: "Page B", Count: 3000 },
+  //   { name: "Page C", Count: 5000 },
+  //   { name: "Page D", Count: 1000 },
+  //   { name: "Page E", Count: 4000 },
+  //   { name: "Page F", Count: 800 },
+  //   { name: "Page G", Count: 200 },
+  // ];
 
   
   return (

@@ -20,7 +20,9 @@ import {
 import { BiMessage } from "react-icons/bi";
 import { VscVerifiedFilled } from "react-icons/vsc";
 import { format } from "timeago.js";
-
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_URI || "";
+const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
 type Props = {
   data: any;
   id: string;
@@ -104,6 +106,11 @@ const CourseContentMedia: FC<Props> = ({
       setQuestion("");
       refetch();
       toast.success("Questiton Added SuccessFully!");
+      socket.emit("notification", {
+        title: "New Question Recived!",
+        message: `You Have A New Questiton In ${data[activeVideo].title}`,
+        userId: user?._id,
+      });
     }
     if (error) {
       if ("data" in error) {
@@ -116,6 +123,13 @@ const CourseContentMedia: FC<Props> = ({
       setAnswer("");
       refetch();
       toast.success("Answer Added Successfully!");
+      if (user.role !== "admin") {
+        socket.emit("notification", {
+          title: "New Reply Recived!",
+          message: `You Have A New Questiton Reply In  ${data[activeVideo].title}`,
+          userId: user?._id,
+        });
+      }
     }
     if (answerError) {
       if ("data" in answerError) {
@@ -129,6 +143,11 @@ const CourseContentMedia: FC<Props> = ({
       setRating(1);
       courseRefetch();
       toast.success("Review Added SuccessFully!");
+      socket.emit("notification", {
+        title: "A New FeedBack Recived!",
+        message: `You Have A New Feedback In ${data[activeVideo].title}`,
+        userId: user?._id,
+      });
     }
     if (reviewError) {
       if ("data" in reviewError) {
@@ -438,17 +457,18 @@ const CourseContentMedia: FC<Props> = ({
                           </small>
                         </div>
                       </div>
-                      {user.role === "admin" && (
-                        <span
-                          className={`${styles.label} !ml-10 cursor-pointer`}
-                          onClick={() => {
-                            setIsReviewReply(true);
-                            setReviewId(item._id);
-                          }}
-                        >
-                          AddReply
-                        </span>
-                      )}
+                      {user.role === "admin" &&
+                        item.commentReplies.length === 0 && (
+                          <span
+                            className={`${styles.label} !ml-10 cursor-pointer`}
+                            onClick={() => {
+                              setIsReviewReply(true);
+                              setReviewId(item._id);
+                            }}
+                          >
+                            AddReply
+                          </span>
+                        )}
                       {/* Review Reply */}
                       {isReviewReply && reviewId === item._id && (
                         <div className="w-full flex relative">
@@ -605,63 +625,65 @@ const CommentItem = ({
           {item.questionReplies.length}
         </span>
       </div>
-      {replyActive &&
-        questionId === item._id &&
-        item?.questionReplies?.map((item: any, index: number) => (
-          <div
-            key={index}
-            className="w-full flex 800px:ml-16 my-5 text-black dark:text-white"
-          >
-            <div>
-              <Image
-                src={
-                  item.user.avatar
-                    ? item.user?.avatar.url
-                    : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
-                }
-                alt=""
-                width={50}
-                height={50}
-                className="w-[50px] h-[50px] rounded-full object-cover"
-              />
-            </div>
-            <div className="pl-2 ">
-              <div className="flex items-center">
-                <h5 className="text-[20px]">{item.user.name}</h5>
-                {item.user.role === "admin" && (
-                  <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
-                )}
+      {replyActive && questionId === item._id && (
+        <>
+          {item?.questionReplies?.map((item: any, index: number) => (
+            <div
+              key={index}
+              className="w-full flex 800px:ml-16 my-5 text-black dark:text-white"
+            >
+              <div>
+                <Image
+                  src={
+                    item.user.avatar
+                      ? item.user?.avatar.url
+                      : "https://res.cloudinary.com/dshp9jnuy/image/upload/v1665822253/avatars/nrxsg8sd9iy10bbsoenn.png"
+                  }
+                  alt=""
+                  width={50}
+                  height={50}
+                  className="w-[50px] h-[50px] rounded-full object-cover"
+                />
               </div>
+              <div className="pl-2 ">
+                <div className="flex items-center">
+                  <h5 className="text-[20px]">{item.user.name}</h5>
+                  {item.user.role === "admin" && (
+                    <VscVerifiedFilled className="text-[#0095F6] ml-2 text-[20px]" />
+                  )}
+                </div>
 
-              <p>{item.answer}</p>
-              <small className="text-[#ffffff83] ">
-                {format(item.createdAt)} •
-              </small>
+                <p>{item.answer}</p>
+                <small className="text-[#ffffff83] ">
+                  {format(item.createdAt)} •
+                </small>
+              </div>
             </div>
-          </div>
-        ))}
-      <>
-        <div className="w-full flex relative dark:text-white text-black">
-          <input
-            type="text"
-            placeholder="Enter your answer..."
-            value={answer}
-            onChange={(e: any) => setAnswer(e.target.value)}
-            className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] 
+          ))}
+          <>
+            <div className="w-full flex relative dark:text-white text-black">
+              <input
+                type="text"
+                placeholder="Enter your answer..."
+                value={answer}
+                onChange={(e: any) => setAnswer(e.target.value)}
+                className={`block 800px:ml-12 mt-2 outline-none bg-transparent border-b border-[#00000027] dark:text-white text-black dark:border-[#fff] p-[5px] w-[95%] 
             ${answer === "" || (answerCreationLoading && "cursor-not-allowed")}
             `}
-          />
-          <button
-            type="submit"
-            className="absolute right-0 bottom-1"
-            onClick={handleAnswerSubmit}
-            disabled={answer === "" || answerCreationLoading}
-          >
-            Submit
-          </button>
-        </div>
-        <br />
-      </>
+              />
+              <button
+                type="submit"
+                className="absolute right-0 bottom-1"
+                onClick={handleAnswerSubmit}
+                disabled={answer === "" || answerCreationLoading}
+              >
+                Submit
+              </button>
+            </div>
+            <br />
+          </>
+        </>
+      )}
     </div>
   );
 };

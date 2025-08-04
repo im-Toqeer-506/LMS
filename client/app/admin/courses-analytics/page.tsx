@@ -8,7 +8,6 @@ import DashboardHero from "@/app/components/Admin/DashboardHero";
 type Props = object;
 
 const Page = () => {
-  
   return (
     <div>
       <AdminProtected>
@@ -22,7 +21,7 @@ const Page = () => {
             <AdminSidebar />
           </div>
           <div className="w-[85%]">
-            <DashboardHero />
+            <DashboardHero isDashboard={true} />
             <CourseAnalytics />
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 import { redirect, useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import CourseContent from "../../components/Courses/CourseContent";
+import Footer from "@/app/components/Footer/Footer";
 
 const page = () => {
   const params = useParams();
@@ -28,6 +29,7 @@ const page = () => {
       ) : (
         <div>
           <CourseContent id={id} user={data?.user} />
+          <Footer />
         </div>
       )}
     </>

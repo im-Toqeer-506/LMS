@@ -1,47 +1,34 @@
-import { styles } from "../../../styles/styles";
 import {
-  Bar,
   BarChart,
-  Label,
-  LabelList,
+  Bar,
   ResponsiveContainer,
   XAxis,
+  Label,
   YAxis,
+  LabelList,
 } from "recharts";
 import Loader from "../../Loader/Loader";
 import { useGetCoursesAnalyticsQuery } from "@/redux/features/analytics/analyticsApi";
-import { FC } from "react";
-type Props = object;
+import { styles } from "@/app/styles/styles";
 
-const CourseAnalytics: FC<Props> = () => {
+const CourseAnalytics = () => {
   const { data, isLoading } = useGetCoursesAnalyticsQuery({});
-  // const analyticsData: any = [];
 
-  // if (data && data.courses && data.courses.last12Months) {
-  //   data.courses.last12Months.forEach((item: any) => {
-  //     analyticsData.push({
-  //       name: item.month,
-  //       uv: item.count,
-  //     });
-  //   });
-  // }
+  // const analyticsData = [
+  //     { name: 'Jun 2023', uv: 3 },
+  //     { name: 'July 2023', uv: 2 },
+  //     { name: 'August 2023', uv: 5 },
+  //     { name: 'Sept 2023', uv: 7 },
+  //     { name: 'October 2023', uv: 2 },
+  //     { name: 'Nov 2023', uv: 5 },
+  //     { name: 'December 2023', uv: 7 },
+  //   ];
 
-  //Once with Dumy Data
-  const analyticsData = [
-  { name: "January 2024", uv: 3 },
-  { name: "February 2024", uv: 2 },
-  { name: "March 2024", uv: 5 },
-  { name: "April 2024", uv: 7 },
-  { name: "May 2024", uv: 2 },
-  { name: "June 2024", uv: 5 },
-  { name: "July 2024", uv: 7 },
-  { name: "August 2024", uv: 4 },
-  { name: "September 2024", uv: 6 },
-  { name: "October 2024", uv: 3 },
-  { name: "November 2024", uv: 5 },
-  { name: "December 2024", uv: 6 },
-];
-
+  const analyticsData: any = [];
+  data &&
+    data.courses?.last12Months?.forEach((item: any) => {
+      analyticsData.push({ name: item.month, uv: item.count });
+    });
   const minValue = 0;
 
   return (
@@ -55,12 +42,12 @@ const CourseAnalytics: FC<Props> = () => {
               Courses Analytics
             </h1>
             <p className={`${styles.label} px-5`}>
-              Last 12 Months Analytics Data
+              Last 12 months analytics data{" "}
             </p>
           </div>
 
           <div className="w-full h-[90%] flex items-center justify-center">
-            <ResponsiveContainer width="90%" height="50%">
+            <ResponsiveContainer width="100%" height="50%">
               <BarChart width={150} height={300} data={analyticsData}>
                 <XAxis dataKey="name">
                   <Label offset={0} position="insideBottom" />

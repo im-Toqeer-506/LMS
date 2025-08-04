@@ -4,7 +4,7 @@ import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import OrderModel,{IOrder} from "../models/order.model";
 import userModel from "../models/user.model";
-import CourseModel from "../models/course.model";
+import CourseModel, { ICourse } from "../models/course.model";
 import path from "path";
 import ejs from "ejs"
 import sendMail from "../utils/sendMail";

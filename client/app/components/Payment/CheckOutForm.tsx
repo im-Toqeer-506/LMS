@@ -10,13 +10,17 @@ import {
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import socketIO from "socket.io-client";
+const ENDPOINT = process.env.NEXT_PUBLIC_SOCKET_URI || "";
+const socket = socketIO(ENDPOINT, { transports: ["websocket"] });
 
 type Props = {
   setOpen: any;
   data: any;
+  user: any;
 };
 
-const CheckOutForm = ({ setOpen, data }: Props) => {
+const CheckOutForm = ({ setOpen, data, user }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>("");
@@ -45,6 +49,11 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
   };
   useEffect(() => {
     if (orderData) {
+      socket.emit("notification", {
+        title: "New Order",
+        message: `You Have A New Order From ${data?.name}`,
+        userId: user?._id,
+      });
       setLoadUser(true);
       redirect(`/course-access/${data._id}`);
     }
@@ -57,7 +66,8 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
   }, [orderData, error]);
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-      <LinkAuthenticationElement id="link-authentication-element"
+      <LinkAuthenticationElement
+        id="link-authentication-element"
         // Access the email value like so:
         // onChange={(event) => {
         //  setEmail(event.value.email);
@@ -84,4 +94,3 @@ const CheckOutForm = ({ setOpen, data }: Props) => {
 
 export default CheckOutForm;
 //https://github.com/stripe-samples/accept-a-payment/blob/main/payment-element/client/react-cra/src/CheckoutForm.jsx
-

@@ -18,10 +18,10 @@ const CourseCard: FC<Props> = ({ item, isProfile }) => {
       <div className="w-full min-h-[35vh] dark:bg-slate-500 dark:bg-opacity-20 backdrop-blur border dark:border-[#ffffff1d] border-[#00000015] dark:shadow-[bg-slate-700] rounded-lg p-3 shadow-sm dark:shadow-inner">
         <Image
           width={500}
-          height={300}
+          height={500}
           src={item.thumbnail.url}
           style={{ objectFit: "cover" }}
-          className="rounded w-full"
+          className="w-[500px] h-[300px] rounded"
           alt="thumbnail"
         />
         <br />

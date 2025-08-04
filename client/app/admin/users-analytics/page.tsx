@@ -23,8 +23,8 @@ const Page = () => {
             <AdminSidebar />
           </div>
           <div className="w-[85%]">
-            <DashboardHero />
-            <UserAnalytics isDashboard={true} />
+            <DashboardHero isDashboard={true}  />
+            <UserAnalytics />
           </div>
         </div>
       </AdminProtected>
