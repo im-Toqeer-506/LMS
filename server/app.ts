@@ -9,6 +9,7 @@ import orderRouter from "./routes/order.route";
 import notificationRouter from "./routes/notification.route";
 import analyticsRouter from "./routes/analytics.route";
 import layoutRouter from "./routes/layout.route";
+import { rateLimit } from "express-rate-limit";
 export const app = express();
 //body parser
 app.use(express.json({ limit: "50mb" }));
@@ -22,6 +23,15 @@ app.use(
     credentials: true,
   })
 );
+//api request limit
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  ipv6Subnet: 56,
+});
+// Apply the rate limiting middleware to all requests.
 // testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({
@@ -42,4 +52,6 @@ app.all(/(.*)/, (req: Request, res: Response, next: NextFunction) => {
   err.statusCode = 404;
   next(err);
 });
+//Middleware Calls
+app.use(limiter);
 app.use(ErrorMiddleware);
