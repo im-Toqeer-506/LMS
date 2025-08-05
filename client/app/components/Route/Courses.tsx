@@ -2,9 +2,7 @@ import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/courseApi";
 import React, { useEffect, useState } from "react";
 import CourseCard from "../Courses/CourseCard";
 
-type Props = {};
-
-const Courses = (props: Props) => {
+const Courses = () => {
   const { data, isLoading } = useGetUsersAllCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }

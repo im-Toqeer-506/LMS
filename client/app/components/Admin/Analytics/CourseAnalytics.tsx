@@ -25,10 +25,14 @@ const CourseAnalytics = () => {
   //   ];
 
   const analyticsData: any = [];
-  data &&
-    data.courses?.last12Months?.forEach((item: any) => {
-      analyticsData.push({ name: item.month, uv: item.count });
+   if (data && data.courses && data.courses.last12Months) {
+    data.courses.last12Months.forEach((item: any) => {
+      analyticsData.push({
+        name: item.month,
+        uv: item.count,
+      });
     });
+  }
   const minValue = 0;
 
   return (

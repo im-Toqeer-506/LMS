@@ -7,7 +7,6 @@ import { useGetAllUsersQuery } from "@/redux/features/user/userApi";
 import { useGetAllOrdersQuery } from "@/redux/features/Orders/ordersApi";
 import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
-import CourseData from "../Course/CourseData";
 import { AiOutlineMail } from "react-icons/ai";
 type Props = {
   isDashboard?: boolean;
@@ -28,7 +27,9 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
     if (OrdersData && UsersData && CoursesData) {
       const temp = OrdersData.orders.map((order: any) => {
         const user = UsersData.users.find((u: any) => u._id === order.userId);
-        const course = CoursesData.courses.find((c: any) => c._id === order.courseId);
+        const course = CoursesData.courses.find(
+          (c: any) => c._id === order.courseId
+        );
         return {
           ...order,
           userName: user?.name,
@@ -39,7 +40,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
       });
       setOrderData(temp);
     }
-  }, [UsersData, OrdersData, CourseData]);
+  }, [UsersData, OrdersData, CoursesData]);
 
   const columns: any = [
     { field: "id", headerName: "ID", flex: 0.3 },
@@ -75,7 +76,7 @@ const AllInvoices: FC<Props> = ({ isDashboard }) => {
     userEmail: item.userEmail,
     title: item.title,
     price: item.price,
-    formattedDate: item.createdAt,
+    formattedDate: format(item.createdAt),
   }));
   return (
     <div className={!isDashboard ? "mt-[120px]" : "mt-[0px]"}>

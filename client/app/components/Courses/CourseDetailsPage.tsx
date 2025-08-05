@@ -37,7 +37,7 @@ const CourseDetailsPage: FC<Props> = ({ id }: Props) => {
       const amount = Math.round(data?.course?.price * 100);
       createPaymentIntent(amount);
     }
-  }, [config, data]);
+  }, [config, data,createPaymentIntent]);
   useEffect(() => {
     if (paymentIntentdata) {
       setClientSecret(paymentIntentdata.client_secret);

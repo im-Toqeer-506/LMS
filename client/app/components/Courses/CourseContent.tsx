@@ -13,7 +13,6 @@ type Props = {
 const CourseContent = ({ id, user }: Props) => {
   const {
     data: contentData,
-    error,
     isLoading,
     refetch,
   } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true });

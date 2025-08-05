@@ -6,7 +6,7 @@ type Props = {
 };
 
 const CourseOptions: FC<Props> = ({ active, setActive }) => {
-// List of step names for the course creation process
+  // List of step names for the course creation process
   const options = [
     "Course Information",
     "Course Data",
@@ -19,6 +19,7 @@ const CourseOptions: FC<Props> = ({ active, setActive }) => {
         <div
           key={index}
           className={`w-full m-[13px] 800px:m-[0px] 800px:flex py-5`}
+          onClick={() => setActive(index)}
         >
           <div
             className={`w-[35px] h-[35px]  rounded-full  flex items-center justify-center ${

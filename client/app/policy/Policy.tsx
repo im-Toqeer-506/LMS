@@ -1,9 +1,8 @@
 import React from "react";
 import { styles } from "../styles/styles";
 
-type Props = {};
 
-const Policy = (props: Props) => {
+const Policy = () => {
   return (
     <div>
       <div className={`w-[95%] 800px:w-[92%] m-auto py-2 text-black dark:text-white px-3`}>
@@ -83,7 +82,7 @@ const Policy = (props: Props) => {
           <p className="text-[16px]  ml-[15px] whitespace-pre-line">
             We encourage respectful communication and collaboration. No
             harassment, hate speech, spamming, or unrelated promotions are
-            allowed. Let's build a safe and positive learning space together.
+            allowed.Let&apos;s build a safe and positive learning space together.
           </p>
         </div>
 

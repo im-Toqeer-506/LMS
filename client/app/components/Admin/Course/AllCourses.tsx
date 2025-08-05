@@ -15,9 +15,8 @@ import Loader from "../../Loader/Loader";
 import { format } from "timeago.js";
 import toast from "react-hot-toast";
 import { styles } from "@/app/styles/styles";
-type Props = {};
 
-const AllCourses = (props: Props) => {
+const AllCourses = () => {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const [courseId, setCourseId] = useState("");

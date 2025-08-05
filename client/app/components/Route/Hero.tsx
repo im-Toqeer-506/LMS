@@ -3,12 +3,11 @@ import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import Loader from "../Loader/Loader";
 
-type Props = {};
-const Hero: FC<Props> = (props) => {
+const Hero = () => {
   const [search, setSearch] = useState("");
   const router = useRouter();
   const { data, isLoading } = useGetHeroDataQuery("Banner", {
@@ -76,20 +75,26 @@ const Hero: FC<Props> = (props) => {
             <div className="flex items-center space-x-4">
               <div className="flex -space-x-2">
                 <Image
-                  src={require("../../../public/assets/client-1.jpg")}
+                  src="/assets/client-1.jpg"
                   alt=""
+                  width={40}
+                  height={40}
                   className="rounded-full"
                 />
 
                 <Image
-                  src={require("../../../public/assets/client-2.jpg")}
+                  src="/assets/client-2.jpg"
                   alt=""
+                  width={40}
+                  height={40}
                   className="rounded-full ml-[-20px]"
                 />
 
                 <Image
-                  src={require("../../../public/assets/client-3.jpg")}
+                  src="/assets/client-3.jpg"
                   alt=""
+                  width={40}
+                  height={40}
                   className="rounded-full ml-[-20px]"
                 />
               </div>

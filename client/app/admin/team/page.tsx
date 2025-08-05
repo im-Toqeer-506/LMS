@@ -5,9 +5,9 @@ import Heading from "@/app/utils/Heading";
 import AdminSideBar from "../../components/Admin/sideBar/AdminSideBar";
 import AllUsers from "../../components/Admin/Users/AllUsers";
 import React from "react";
-type Props = {};
 
-const page = (props: Props) => {
+
+const Page = () => {
   return (
     <div>
       <AdminProtected>
@@ -32,4 +32,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,11 +1,9 @@
 import { styles } from "../../styles/styles";
 import { useUpdatePasswordMutation } from "../../../redux/features/user/userApi";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-type Props = object;
-
-const ChangePassword: FC<Props> = (props) => {
+const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

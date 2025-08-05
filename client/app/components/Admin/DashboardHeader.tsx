@@ -50,7 +50,7 @@ const DashboardHeader: FC<Props> = ({ open, setOpen }) => {
     if (isSuccess) {
       refetch();
     }
-  }, [data, isSuccess]);
+  }, [data, isSuccess,refetch]);
 
   /*
 Set up a socket listener for real-time "newNotification" events from the server. When a new notification arrives, it refetches the notification list and plays a sound.
@@ -112,7 +112,7 @@ Set up a socket listener for real-time "newNotification" events from the server.
           {notifications &&
             notifications.map((item: any, index: number) => (
               <div
-                key={item._id}
+                key={index}
                 className="dark:bg-[#2d3a4ea1] bg-[#00000013] font-Poppins border-b dark:border-b-[#ffffff47] border-b-[#0000000f]"
               >
                 <div className="w-full flex items-center justify-between p-2">

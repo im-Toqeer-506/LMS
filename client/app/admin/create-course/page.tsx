@@ -4,9 +4,9 @@ import AdminSidebar from "../../components/Admin/sideBar/AdminSideBar";
 import Heading from "../../../app/utils/Heading";
 import CreateCourse from "../../components/Admin/Course/CreateCourse";
 import DashboardHeader from "../../components/Admin/DashboardHeader";
-type Props = {};
 
-const page = (props: Props) => {
+
+const Page = () => {
   return (
     <div>
       <Heading
@@ -27,4 +27,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;

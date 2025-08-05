@@ -7,9 +7,9 @@ import CoursePreview from "./CoursePreview";
 import { useCreateCourseMutation } from "../../../../redux/features/courses/courseApi";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
-type Props = {};
 
-const CreateCourse = (props: Props) => {
+
+const CreateCourse = () => {
   const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
     name: "",
@@ -46,7 +46,7 @@ const CreateCourse = (props: Props) => {
     { isSuccess, error, isLoading },
   ] = useCreateCourseMutation();
 //Submits the course data to the API 
-  const handleCourseCreate = async (e: any) => {
+  const handleCourseCreate = async () => {
     if (!isLoading) {
       await createCourse(courseData);
     }

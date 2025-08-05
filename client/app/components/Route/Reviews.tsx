@@ -2,7 +2,7 @@ import { styles } from "@/app/styles/styles";
 import Image from "next/image";
 import React from "react";
 import ReviewCard from "../Review/ReviewCard";
-type Props = {};
+
 const reviews = [
   {
     name: "Ayesha Siddiqui",
@@ -54,14 +54,14 @@ const reviews = [
   },
 ];
 
-const Reviews = (props: Props) => {
+const Reviews = () => {
   return (
     <div className="w-[90%] 800px:w-[85%] m-auto">
       <div className="w-full 800px:flex items-center gap-10">
         {/* Left Side */}
         <div className="w-full 800px:w-[50%]">
           <Image
-            src={require("../../../public/assets/bussiness.jpg")}
+            src="/assets/bussiness.jpg"
             alt="business"
             width={500}
             height={500}

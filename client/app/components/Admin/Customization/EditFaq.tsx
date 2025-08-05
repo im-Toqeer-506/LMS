@@ -10,9 +10,8 @@ import { HiMinus, HiPlus } from "react-icons/hi";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Loader from "../../Loader/Loader";
 
-type Props = {};
 
-const EditFaq = (props: Props) => {
+const EditFaq = () => {
   const { data, refetch } = useGetHeroDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });
@@ -35,7 +34,7 @@ const EditFaq = (props: Props) => {
       const errorData = error as any;
       toast.error(errorData?.data?.message);
     }
-  }, [data, layoutSuccess, error]);
+  }, [data, layoutSuccess, error,refetch]);
   //setting the clicked question to active/inactive
   const toggleQuestion:any = (id: any) => {
     setQuestions((prevQuestion) =>

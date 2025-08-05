@@ -5,7 +5,7 @@ import Heading from "../../../../app/utils/Heading";
 import EditCourse from "../../../components/Admin/Course/EditCourse";
 import DashboardHeader from "../../../components/Admin/DashboardHeader";
 
-const page = ({ params }: { params: Promise<{ id: string }> }) => {
+const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
 
   return (
@@ -28,4 +28,4 @@ const page = ({ params }: { params: Promise<{ id: string }> }) => {
   );
 };
 
-export default page;
+export default Page;

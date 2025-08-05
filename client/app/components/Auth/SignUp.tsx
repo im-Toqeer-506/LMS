@@ -25,7 +25,7 @@ const schema = Yup.object().shape({
 });
 const SignUp: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
-  const [register, { isError, data, error, isSuccess }] = useRegisterMutation();
+  const [register, { data, error, isSuccess }] = useRegisterMutation();
   useEffect(() => {
     if (isSuccess) {
       const message = data?.message || "Registration Successfull!";

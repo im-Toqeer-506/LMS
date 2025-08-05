@@ -29,13 +29,12 @@ type Props = {
 const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const [active, setActive] = useState(false);
   const [openSideBar, setOpenSideBar] = useState(false);
-  const { user } = useSelector((state: any) => state.auth);
   const { data } = useSession();
   const { data: userData, isLoading, refetch } = useLoadUserQuery(
     undefined,
     {}
   );
-  const [socialAuth, { isSuccess, error }] = useSocialAuthMutation();
+  const [socialAuth, { isSuccess }] = useSocialAuthMutation();
   const [logout, SetLogOut] = useState(false);
   const {} = useLogoutQuery(undefined, {
     skip: !logout ? true : false,
@@ -60,9 +59,9 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
       toast.success("Welcome back to ELearning!");
       setOpen(false);
     }
-    // if (data === null && !isLoading && !userData) {
-    //   SetLogOut(true);
-    // }
+    if (data === null && !isLoading && !userData) {
+      SetLogOut(true);
+    }
   }, [data, isLoading, isSuccess, refetch, setOpen, socialAuth, userData]);
   //Based on the user Scrool change the scroll at once
   useEffect(() => {
@@ -81,7 +80,6 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
       setOpenSideBar(false);
     }
   };
-  const { status, data: session } = useSession();
   return (
     <div className="w-full relative ">
       {/* Sticky and styled header depending on scroll */}

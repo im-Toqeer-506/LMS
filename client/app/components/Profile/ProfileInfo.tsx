@@ -46,7 +46,7 @@ const ProfileInfo: FC<Props> = ({ user, avatar }) => {
     if (success) {
       toast.success("User updated successfully");
     }
-  }, [isSuccess, success, error || UpdatedError]);
+  }, [isSuccess, success, error, UpdatedError]);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (name !== "") {

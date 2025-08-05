@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import CourseContent from "../../components/Courses/CourseContent";
 import Footer from "@/app/components/Footer/Footer";
 
-const page = () => {
+const Page = () => {
   const params = useParams();
   const id = params?.id as string;
   const { isLoading, error, data } = useLoadUserQuery(undefined, {});
@@ -21,7 +21,7 @@ const page = () => {
     if (error) {
       redirect("/");
     }
-  }, [data, error]);
+  }, [data, error,id,isLoading]);
   return (
     <>
       {isLoading ? (
@@ -36,4 +36,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

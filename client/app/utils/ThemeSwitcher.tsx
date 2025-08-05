@@ -3,8 +3,6 @@ import { useTheme } from "next-themes";
 import React, { useState, useEffect } from "react";
 import { BiMoon, BiSun } from "react-icons/bi";
 
-type Props = {};
-
 export const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();

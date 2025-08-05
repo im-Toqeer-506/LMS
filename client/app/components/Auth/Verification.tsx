@@ -36,7 +36,7 @@ const Verification: FC<Props> = ({ setRoute }) => {
         console.log("An error accured", error);
       }
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, setRoute]);
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),

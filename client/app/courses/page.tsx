@@ -1,46 +1,45 @@
 "use client";
+import { useSearchParams } from "next/navigation";
+import Footer from "../components/Footer/Footer";
+import { useEffect, useState, Suspense } from "react";
+import Header from "../components/Header";
+import Loader from "../components/Loader/Loader";
+import Headings from "../utils/Heading";
 import { useGetUsersAllCoursesQuery } from "@/redux/features/courses/courseApi";
 import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import Loader from "../components/Loader/Loader";
-import Header from "../components/Header";
-import Heading from "../utils/Heading";
 import { styles } from "../styles/styles";
 import CourseCard from "../components/Courses/CourseCard";
-import Footer from "../components/Footer/Footer";
+
 type Props = {};
-const Page = (props: Props) => {
+
+const CoursesContent = () => {
   const searchParams = useSearchParams();
-  const searchTerm = searchParams?.get("title");
+  const search = searchParams?.get("title");
   const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
-  const { data: CategoriesData } = useGetHeroDataQuery("Categories", {});
+  const { data: categories } = useGetHeroDataQuery("Categories", {});
   const [route, setRoute] = useState("Login");
   const [open, setOpen] = useState(false);
   const [courses, setCourses] = useState([]);
   const [category, setCategory] = useState("All");
-  const layoutCategories = CategoriesData?.layout?.categories || [];
- 
+  const layoutCategories = categories?.layout?.categories;
+
   useEffect(() => {
-    if (!data?.course) return;
-    if (searchTerm) {
+    if (category === "All") {
+      setCourses(data?.courses);
+    }
+    if (category === "All") {
       setCourses(
-        data.course.filter((item: any) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        data?.courses.filter((item: any) => item.layoutCategories === category)
       );
-    } else if (category === "All") {
-      setCourses(data.course);
-    } else {
+    }
+    if (search) {
       setCourses(
-        data.course.filter(
-          (item: any) =>
-            item.categories &&
-            item.categories.toLowerCase() === category.toLowerCase()
+        data?.courses.filter((item: any) =>
+          item.name.toLowerCase().includes(search.toLowerCase())
         )
       );
     }
-  }, [category, data, searchTerm]);
+  }, [category, data, search]);
 
   return (
     <>
@@ -56,7 +55,7 @@ const Page = (props: Props) => {
             activeItem={1}
           />
           <div className="w-[95%] 800px:w-[85%] m-auto min-h-[70vh]">
-            <Heading
+            <Headings
               title={"All courses - LMS"}
               description={"LMS is a programming community."}
               keywords={
@@ -93,7 +92,7 @@ const Page = (props: Props) => {
               <p
                 className={`${styles.label} justify-center min-h-[50vh] flex items-center`}
               >
-                {searchTerm
+                {search
                   ? "No courses found!"
                   : "No courses found in this category. Please try another one!"}
               </p>
@@ -107,10 +106,18 @@ const Page = (props: Props) => {
                 ))}
             </div>
           </div>
-          <Footer/>
+          <Footer />
         </>
       )}
     </>
+  );
+};
+
+const Page = ({}: Props) => {
+  return (
+    <Suspense fallback={<Loader />}>
+      <CoursesContent />
+    </Suspense>
   );
 };
 

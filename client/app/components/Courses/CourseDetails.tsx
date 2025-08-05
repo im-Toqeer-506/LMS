@@ -4,7 +4,6 @@ import Ratings from "@/app/utils/Ratings";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import { IoCheckmarkDoneOutline, IoCloseOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
 import { format } from "timeago.js";
 import CourseContentList from "../Courses/CourseContentList";
 import { Elements } from "@stripe/react-stripe-js";

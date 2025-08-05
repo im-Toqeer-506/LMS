@@ -3,12 +3,11 @@ import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import React, { useEffect, useState } from "react";
 import { HiMinus, HiPlus } from "react-icons/hi";
 
-type Props = {};
 
-const FAQ = (props: Props) => {
+const FAQ = () => {
   const [activeQuestion, setActiveQuestion] = useState(null);
   const [questions, setQuestions] = useState<any[]>([]);
-  const { data, refetch } = useGetHeroDataQuery("FAQ", {
+  const { data} = useGetHeroDataQuery("FAQ", {
     refetchOnMountOrArgChange: true,
   });
   useEffect(() => {

@@ -86,14 +86,14 @@ const EditCourse: FC<Props> = ({ id }) => {
     }
   }, [EditCourseData]);
   //Submits the course data to the API
-  const handleCourseCreate = async (e: any) => {
+  const handleCourseCreate = async () => {
     if (!isLoading && courseData) {
       await editCourse({ id: EditCourseData._id, data: courseData });
     }
   };
 
   // Formating all course input data into Object
-  const handleSubmit = async () => {
+  const handleSubmit =  () => {
     //format benfits array
     const formattedBenefits = benefits.map((benefit) => ({
       title: benefit.title,

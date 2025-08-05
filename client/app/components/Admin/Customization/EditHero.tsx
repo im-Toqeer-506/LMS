@@ -10,7 +10,6 @@ import {
   useGetHeroDataQuery,
 } from "@/redux/features/layout/layoutApi";
 
-type Props = object;
 
 const EditHero = () => {
   const [image, setImage] = useState("");

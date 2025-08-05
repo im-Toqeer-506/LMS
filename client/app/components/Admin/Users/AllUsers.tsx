@@ -60,7 +60,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [isSuccess, updateUserRoleError, deleteError, refetch]);
+  }, [isSuccess, updateUserRoleError, deleteError, deleteSuccess,refetch]);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.3 },
@@ -76,7 +76,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
       renderCell: (params: any) => {
         return (
           <>
-            <a>
+          <a href={`mailto:${params.row.email}`}>
               <AiOutlineMail className="dark:text-white text-black" size={20} />
             </a>
           </>

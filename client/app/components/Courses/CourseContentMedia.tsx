@@ -176,6 +176,9 @@ const CourseContentMedia: FC<Props> = ({
     reviewError,
     replyError,
     replySuccess,
+    user._id,
+    user.role,
+    refetch,
   ]);
   const handleAnswerSubmit = () => {
     addAnswerInQuestion({
@@ -538,7 +541,6 @@ const CommentReply = ({
   answer,
   setAnswer,
   handleAnswerSubmit,
-  user,
   questionId,
   setQuestionId,
   answerCreationLoading,
@@ -567,10 +569,7 @@ const CommentReply = ({
 };
 
 const CommentItem = ({
-  data,
   item,
-  activeVideo,
-  index,
   answer,
   setAnswer,
   questionId,

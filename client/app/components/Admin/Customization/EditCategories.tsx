@@ -9,9 +9,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
-type Props = {};
 
-const EditCategories = (props: Props) => {
+const EditCategories = () => {
   const [categories, setCategories] = useState<any>([]);
   const { data, isLoading, refetch } = useGetHeroDataQuery("Categories", {
     refetchOnMountOrArgChange: true,
@@ -32,7 +31,7 @@ const EditCategories = (props: Props) => {
       const errorData = error as any;
       toast.error(errorData?.data?.message);
     }
-  }, [data, layoutSuccess, error]);
+  }, [data, layoutSuccess, error,refetch]);
   const handleCategoriesAdd = (id: any, value: string) => {
     setCategories((prevCategory: any) =>
       prevCategory.map((i: any) => (i._id === id ? { ...i, title: value } : i))

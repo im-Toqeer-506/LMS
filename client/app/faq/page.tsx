@@ -4,9 +4,8 @@ import Heading from "../utils/Heading";
 import Header from "../components/Header";
 import Footer from "../components/Footer/Footer";
 import FAQ from "../components/Route/FAQ";
-type Props = {};
 
-const page = (props: Props) => {
+const Page = () => {
   const [open, setOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(4);
   const [route, setRoute] = useState("Login");
@@ -24,11 +23,11 @@ const page = (props: Props) => {
         setRoute={setRoute}
         route={route}
       />
-      <br/>
+      <br />
       <FAQ />
       <Footer />
     </div>
   );
 };
 
-export default page;
+export default Page;

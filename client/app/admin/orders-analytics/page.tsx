@@ -4,7 +4,7 @@ import OrderAnalytics from "../../components/Admin/Analytics/OrdersAnalytics";
 import AdminProtected from "@/app/hooks/adminProtected";
 import AdminSidebar from "../../components/Admin/sideBar/AdminSideBar";
 import DashboardHero from "@/app/components/Admin/DashboardHero";
-type Props = object;
+
 
 const Page = () => {
   return (
