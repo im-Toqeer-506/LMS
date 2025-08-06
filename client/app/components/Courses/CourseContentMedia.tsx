@@ -176,9 +176,12 @@ const CourseContentMedia: FC<Props> = ({
     reviewError,
     replyError,
     replySuccess,
+    data,
     user._id,
     user.role,
     refetch,
+    activeVideo,
+    courseRefetch,
   ]);
   const handleAnswerSubmit = () => {
     addAnswerInQuestion({

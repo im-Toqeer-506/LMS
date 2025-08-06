@@ -10,7 +10,7 @@ import { useGetHeroDataQuery } from "@/redux/features/layout/layoutApi";
 import { styles } from "../styles/styles";
 import CourseCard from "../components/Courses/CourseCard";
 
-type Props = {};
+
 
 const CoursesContent = () => {
   const searchParams = useSearchParams();
@@ -113,7 +113,7 @@ const CoursesContent = () => {
   );
 };
 
-const Page = ({}: Props) => {
+const Page = () => {
   return (
     <Suspense fallback={<Loader />}>
       <CoursesContent />

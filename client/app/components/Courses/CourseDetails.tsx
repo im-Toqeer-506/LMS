@@ -26,7 +26,7 @@ const CourseDetails: FC<Props> = ({
   setRoute,
   setOpen: OpenAuthModel,
 }) => {
-  const { data: userData } = useLoadUserQuery(undefined, {});
+  const { data: userData,refetch } = useLoadUserQuery(undefined, {});
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<any>();
   useEffect(() => {
@@ -40,7 +40,7 @@ const CourseDetails: FC<Props> = ({
   //checking weather the user has purchased this course or not
   const isPurchased =
     user && user.courses?.find((item: any) => item._id === data._id);
-  const handleOrder = (e: any) => {
+  const handleOrder = () => {
     if (user) {
       setOpen(true);
     } else {
@@ -284,7 +284,7 @@ const CourseDetails: FC<Props> = ({
                 */}
                 {stripePromise && clientSecret && (
                   <Elements stripe={stripePromise} options={{ clientSecret }}>
-                    <CheckOutForm setOpen={setOpen} data={data} user={user} />
+                    <CheckOutForm setOpen={setOpen} refetch={refetch} data={data} user={user} />
                   </Elements>
                 )}
               </div>

@@ -7,7 +7,7 @@ import FAQ from "../components/Route/FAQ";
 
 const Page = () => {
   const [open, setOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(4);
+  const [activeItem] = useState(4);
   const [route, setRoute] = useState("Login");
   return (
     <div className="min-h-screen">

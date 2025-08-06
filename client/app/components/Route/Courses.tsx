@@ -3,14 +3,15 @@ import React, { useEffect, useState } from "react";
 import CourseCard from "../Courses/CourseCard";
 
 const Courses = () => {
-  const { data, isLoading } = useGetUsersAllCoursesQuery(
+  const { data, refetch } = useGetUsersAllCoursesQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );
   const [courses, setCourses] = useState<any[]>([]);
   useEffect(() => {
+    refetch();
     setCourses(data?.course);
-  }, [data]);
+  }, [data,refetch]);
   return (
     <div>
       <div className={`w-[90%] 800px:w-[80%] m-auto`}>

@@ -14,7 +14,7 @@ type Props = {
 
 const Profile: FC<Props> = ({ user }) => {
   const [scroll, setScroll] = useState(false);
-  const [avatar, setAvatar] = useState(null);
+  const [avatar] = useState(null);
   const [active, setActive] = useState(1);
   const [logout, SetLogOut] = useState(false);
   const [courses, setCourses] = useState([]);
@@ -27,6 +27,15 @@ const Profile: FC<Props> = ({ user }) => {
     SetLogOut(true);
     await signOut();
   };
+  if (typeof window !== "undefined") {
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 85) {
+        setScroll(true);
+      } else {
+        setScroll(false);
+      }
+    });
+  }
   useEffect(() => {
     if (data) {
       const filteredCourses = user.courses

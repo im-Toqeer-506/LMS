@@ -25,7 +25,7 @@ const AllUsers: FC<Props> = ({ isTeam }) => {
   const [role, setRole] = useState("admin");
   const [userId, setUserId] = useState("");
 
-  const { isLoading, data, error, refetch } = useGetAllUsersQuery(
+  const { isLoading, data, refetch } = useGetAllUsersQuery(
     {},
     { refetchOnMountOrArgChange: true }
   );

@@ -18,9 +18,10 @@ type Props = {
   setOpen: any;
   data: any;
   user: any;
+  refetch:any
 };
 
-const CheckOutForm = ({ setOpen, data, user }: Props) => {
+const CheckOutForm = ({ data, user,refetch }: Props) => {
   const stripe = useStripe();
   const elements = useElements();
   const [message, setMessage] = useState<any>("");
@@ -49,6 +50,7 @@ const CheckOutForm = ({ setOpen, data, user }: Props) => {
   };
   useEffect(() => {
     if (orderData) {
+      refetch();
       socket.emit("notification", {
         title: "New Order",
         message: `You Have A New Order From ${data?.name}`,
@@ -63,7 +65,7 @@ const CheckOutForm = ({ setOpen, data, user }: Props) => {
         toast.error(errorMessage.data.message);
       }
     }
-  }, [orderData, error]);
+  }, [orderData, error,data._id,refetch ,data.name,user._id]);
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <LinkAuthenticationElement

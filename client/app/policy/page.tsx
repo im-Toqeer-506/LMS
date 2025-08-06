@@ -8,7 +8,7 @@ import Policy from "./Policy"
 
 const Page = () => {
   const [open, setOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(3);
+  const [activeItem] = useState(3);
   const [route, setRoute] = useState("Login");
   return (
     <div>

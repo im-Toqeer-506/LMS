@@ -7,7 +7,6 @@ import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import Login from "../components/Auth/Login";
 import SignUP from "../components/Auth/SignUp";
 import Verification from "../components/Auth/Verification";
-import { useSelector } from "react-redux";
 import Image from "next/image";
 import avatar from "../../public/assets/avatardefault.jpg";
 import { useSession } from "next-auth/react";
