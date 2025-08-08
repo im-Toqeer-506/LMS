@@ -14,7 +14,7 @@ import CourseCard from "../components/Courses/CourseCard";
 
 const CoursesContent = () => {
   const searchParams = useSearchParams();
-  const search = searchParams?.get("title");
+  const searchTerm = searchParams?.get("title");
   const { data, isLoading } = useGetUsersAllCoursesQuery(undefined, {});
   const { data: categories } = useGetHeroDataQuery("Categories", {});
   const [route, setRoute] = useState("Login");
@@ -24,22 +24,25 @@ const CoursesContent = () => {
   const layoutCategories = categories?.layout?.categories;
 
   useEffect(() => {
-    if (category === "All") {
-      setCourses(data?.courses);
-    }
-    if (category === "All") {
+    if (!data?.course) return;
+    if (searchTerm) {
       setCourses(
-        data?.courses.filter((item: any) => item.layoutCategories === category)
+        data.course.filter((item: any) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
       );
-    }
-    if (search) {
+    } else if (category === "All") {
+      setCourses(data.course);
+    } else {
       setCourses(
-        data?.courses.filter((item: any) =>
-          item.name.toLowerCase().includes(search.toLowerCase())
+        data.course.filter(
+          (item: any) =>
+            item.categories &&
+            item.categories.toLowerCase() === category.toLowerCase()
         )
       );
     }
-  }, [category, data, search]);
+  }, [category, data, searchTerm]);
 
   return (
     <>
@@ -92,7 +95,7 @@ const CoursesContent = () => {
               <p
                 className={`${styles.label} justify-center min-h-[50vh] flex items-center`}
               >
-                {search
+                {searchTerm
                   ? "No courses found!"
                   : "No courses found in this category. Please try another one!"}
               </p>
@@ -100,7 +103,7 @@ const CoursesContent = () => {
             <br />
             <br />
             <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 1500px:grid-cols-4 1500px:gap-[35px] mb-12 border-0">
-              {courses &&
+              {!isLoading&&courses &&
                 courses.map((item: any, index: number) => (
                   <CourseCard item={item} key={index} />
                 ))}

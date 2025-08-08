@@ -34,7 +34,7 @@ const Hero = () => {
           <div className="lg:w-1/2 flex items-center justify-center z-10 mb-8 lg:mb-0">
             {data && (
               <Image
-                src={data?.layout?.banner?.image.url}
+                src={data?.layout?.banner?.image.url||'/assets/hero-banner-1.png'}
                 width={400}
                 height={400}
                 alt="Hero Banner"
