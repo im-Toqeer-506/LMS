@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "name": "LMS Server",
+
+  "builds": [
+    {
+      "src": "server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/server.ts"
+    }
+  ]
+}
