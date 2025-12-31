@@ -19,7 +19,7 @@
     "@stripe/stripe-js": "^7.7.0",
     "axios": "^1.10.0",
     "formik": "^2.4.6",
-    "next": "15.10.4",
+    "next": "15.3.6",
     "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
    "react": "^19.0.0",
