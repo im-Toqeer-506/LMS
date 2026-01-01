@@ -31,7 +31,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, open, route, setRoute }) => {
   const { data } = useSession();
   const { data: userData, isLoading, refetch } = useLoadUserQuery(
     undefined,
-    {}
+    { refetchOnMountOrArgChange: true }
   );
   const [socialAuth, { isSuccess }] = useSocialAuthMutation();
   const [logout, SetLogOut] = useState(false);
